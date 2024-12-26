@@ -4,7 +4,8 @@ class EmployeeModel extends CI_Model
 {
     public function employees()
     {
-        $query = $this->db->get("employee");
+        // $query = $this->db->get("employee");
+        $query = $this->db->query("select * from employee");
         return $query->result();
     }
 
@@ -16,6 +17,7 @@ class EmployeeModel extends CI_Model
     public function employee($id)
     {
         $query = $this->db->where("id", $id)->get("employee");
+        // return $query->row()->first_name;
         return $query->row();
     }
 
