@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
+require FCPATH . 'vendor/autoload.php';
 
 class EmployeeController extends CI_Controller
 {
@@ -50,7 +51,7 @@ class EmployeeController extends CI_Controller
 		$employee = $this->emp->employee($id);
 		$data['employee'] = $employee;
 		$this->load->view("template/header");
-		$this->load->view("frontend/form_update",$data);
+		$this->load->view("frontend/form_update", $data);
 		$this->load->view("template/footer");
 	}
 
@@ -79,4 +80,48 @@ class EmployeeController extends CI_Controller
 			// redirect(base_url("employee/add"));
 		}
 	}
+
+	public function print()
+{
+    // HTML আউটপুট ক্যাচ করা
+    $html = $this->load->view("frontend/EmployeeInfoPdf", [], true);
+
+    try {
+        // ফন্ট ডিরেক্টরি এবং ফন্ট ডেটা কনফিগারেশন তৈরি করা
+        $mpdfConfig = [
+            'fontDir' => [APPPATH . 'assets/fonts/'], // ফন্ট ডিরেক্টরি
+            'fontdata' => [
+                'kalpurush' => [
+                    'R' => 'Kalpurush.ttf',   // রেগুলার ফন্ট
+                    // 'B' => '	', // বোল্ড ফন্ট
+                ],
+            ],
+            'default_font' => 'kalpurush', // ডিফল্ট ফন্ট
+            'mode' => 'utf-8', // ইউটিএফ-৮ মোড
+            'tempDir' => sys_get_temp_dir(), // টেম্প ফোল্ডার ডিরেক্টরি
+        ];
+
+        // mPDF অবজেক্ট তৈরি করা
+        $mpdf = new \Mpdf\Mpdf($mpdfConfig);
+
+        // HTML কন্টেন্ট এবং সিএসএস
+        $html = '<style>
+                    body {
+                        font-family: Kalpurush, sans-serif; /* বাংলা ফন্ট */
+                        font-size: 16px; /* ফন্ট সাইজ */
+                    }
+                </style>' . $html;
+
+        // HTML কন্টেন্ট mPDF এ লিখা
+        $mpdf->WriteHTML($html);
+
+        // পিডিএফ আউটপুট করা (ব্রাউজারে দেখানো)
+        return $mpdf->Output();
+    } catch (\Mpdf\MpdfException $e) {
+        // যদি কোনো সমস্যা হয়, সেটি দেখানো
+        echo "Error: " . $e->getMessage();
+        exit;
+    }
+}
+
 }

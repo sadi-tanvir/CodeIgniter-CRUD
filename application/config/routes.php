@@ -14,3 +14,4 @@ $route['employee/add'] = 'frontend/EmployeeController/add';
 $route['employee/store'] = 'frontend/EmployeeController/store';
 $route['employee/edit/(:any)'] = 'frontend/EmployeeController/edit/$1';
 $route['employee/update/(:any)'] = 'frontend/EmployeeController/update/$1';
+$route['employee/print'] = 'frontend/EmployeeController/print';

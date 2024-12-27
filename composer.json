@@ -11,9 +11,14 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php": ">=5.2.4"
+		"mpdf/mpdf": "v8.0.4"
+	},
+	"config": {
+		"platform": {
+			"php": "7.4.33"
+		}
 	},
 	"require-dev": {
-		"mikey179/vfsStream": "1.1.*"
+		"mikey179/vfsstream": "1.1.*"
 	}
 }
